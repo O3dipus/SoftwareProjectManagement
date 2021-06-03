@@ -49,6 +49,33 @@
                     </v-row>
                 </v-container>
         </v-card>
+
+        <v-container class="grey lighten-5">
+        <v-row
+        class="mb-6"
+        no-gutters
+        >
+        <v-col 
+        md="3">
+            <v-btn
+            depressed
+            elevation="2"
+            outlined
+            @click="turnToLogin">Login</v-btn>
+        </v-col>
+        <v-col 
+        md="3" 
+        offset-md="4">
+            <v-btn
+            depressed
+            elevation="2"
+            outlined
+            class="pa-2"
+            >Logout</v-btn>
+        </v-col>
+        </v-row>
+        
+    </v-container>
     </div>
 </template>
 
@@ -89,5 +116,10 @@ export default {
         accumulated_training_hour:100,
         diet_duration:50
     }),
+    methods: {
+        turnToLogin(){
+            this.$router.push("/Login");
+        }
+    }
 }
 </script>

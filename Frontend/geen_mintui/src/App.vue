@@ -56,6 +56,7 @@ export default {
       {title:'training plan',icon:'mdi-human-handsup',router:'/training/home'},
       {title:'diet plan',icon:'mdi-food-fork-drink',router:'/diet/home'},
       {title:'my account',icon:'mdi-account',router:'/acccount'},
+      {title:'login',icon:'mdi-login',router:'/login'},
     ],
     btn_item:[
       {title:'home',icon:'mdi-home',router:'/'},
