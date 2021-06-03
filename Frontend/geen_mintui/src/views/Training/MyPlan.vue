@@ -1,16 +1,51 @@
 <template>
     <div class="about">
         <h1>This is an my plan</h1>
-
-        <v-text-field
-            v-model="user.accountName"
-            label="accountName"
-            required
-            ></v-text-field>
         <v-btn
             elevation="2"
             @click="test"
-        >fuck me{{this.testlist[0].id}}</v-btn>
+            class="d-flex align-center justify-center pa-4 mx-auto"
+        >查询</v-btn>
+
+        <v-simple-table>
+            <template v-slot:default>
+            <thead>
+                <tr>
+                <th class="text-left">
+                    id
+                </th>
+                <th class="text-left">
+                    workoutName
+                </th>
+                <th class="text-left">
+                    date
+                </th>
+                <th class="text-left">
+                    groupNum
+                </th>
+                <th class="text-left">
+                    times
+                </th>
+                <th class="text-left">
+                    weight
+                </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                v-for="item in testlist"
+                :key="item.id"
+                >
+                <td>{{ item.id }}</td>
+                <td>{{ item.workoutName }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.groupNum }}</td>
+                <td>{{ item.times }}</td>
+                <td>{{ item.weight }}</td>
+                </tr>
+            </tbody>
+            </template>
+        </v-simple-table>
     </div>
 </template>
 
@@ -19,7 +54,7 @@
 export default {
     data: () => ({
     user: {
-        accountName:'',
+        accountName:'761447951@qq.com',
     },
     returnList: [{
         id:[],
@@ -46,10 +81,6 @@ export default {
             console.log(this.testlist[i].id);
         }
         console.log(this.testlist);
-        console.log('我是傻逼');
-        console.log(this.testlist[1]);
-        console.log('我是傻逼2');
-        console.log('res[1].id=>',this.testlist[1].id);
 
         if(res.data){
             console.log('成功');

@@ -28,10 +28,10 @@
                     >
                         <v-card-title
                             class="text-h5"
-                        >My Data</v-card-title>
+                        >Search for course</v-card-title>
 
-                        <v-card-subtitle>Modify your personal information.</v-card-subtitle>
-                        <v-btn plain dense block>My Data</v-btn>
+                        <v-card-subtitle>Search for the course information</v-card-subtitle>
+                        <v-btn plain dense block router :to="router.searchCource">Search for course</v-btn>
                     </v-img>
                 </v-card>
             </v-col>
@@ -135,7 +135,7 @@ export default {
     data: () => ({
         router:{
             fix:'/training/fix',
-            mydata:'/training/mydata',
+            searchCource:'/training/searchCourse',
             history:'/training/history',
             createPlan:'/training/createPlan',
             changePlan:'/training/changePlan',
