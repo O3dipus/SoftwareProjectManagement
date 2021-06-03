@@ -8,7 +8,7 @@
             <v-text-field
             v-model="id"
             :rules="idRules"
-            label="训练计划id"
+            label="饮食计划id"
             required
             ></v-text-field>
 
@@ -86,7 +86,7 @@ export default {
         validate () {
             this.$refs.form.validate();
             console.log(this.id);
-            let url='http://124.70.23.6:8080/api/v1/deleteTrainingPlan/'+this.id;
+            let url='http://124.70.23.6:8080/api/v1/deleteDietPlan/'+this.id;
             console.log(url);
             this.$axios.get(url)
             .then(res=>{

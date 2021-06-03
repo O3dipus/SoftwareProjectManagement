@@ -129,6 +129,51 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/Diet/MyPlan')
+    },
+    {
+        path: '/diet/changeplan',
+        name: 'ChangePlan',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/Diet/ChangePlan')
+    },
+    {
+        path: '/diet/createplan',
+        name: 'CreatePlan',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/Diet/CreatePlan')
+    },
+    {
+        path: '/diet/deleteplan',
+        name: 'DeletePlan',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/Diet/DeletePlan')
+    },
+    {
+        path: '/diet/foodquery',
+        name: 'FoodQuery',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/Diet/FoodQuery')
+    },
+    {
+        path: '/changeuserdata',
+        name: 'ChangeUserData',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/ChangeUserData')
     }
 ]
 

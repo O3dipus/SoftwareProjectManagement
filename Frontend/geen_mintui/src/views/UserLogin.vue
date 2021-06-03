@@ -15,6 +15,12 @@
                                 <div><h3>Name:</h3>{{user_name}}</div>
                                 <div><h3>Age:</h3>{{age}}</div>
                                 <div><h3>Gender:</h3>{{gender}}</div>
+                                <div><h3>Weight:</h3>{{weight}}</div>
+                                <div><h3>Height:</h3>{{height}}</div>
+                                <div><h3>ChestCircum:</h3>{{chestCircum}}</div>
+                                <div><h3>ArmCircum:</h3>{{armCircum}}</div>
+                                <div><h3>HipCircum:</h3>{{hipCircum}}</div>
+                                <div><h3>Waistline:</h3>{{waistline}}</div>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -46,6 +52,7 @@
                         <v-col>
                             <div><h3>Diet Duration:</h3>{{diet_duration}}</div>
                         </v-col>
+                        <v-btn plain dense block router :to="router.changeData">Change Your Data</v-btn>
                     </v-row>
                 </v-container>
         </v-card>
@@ -56,7 +63,9 @@
         no-gutters
         >
         <v-col 
-        md="3">
+        align="center"
+                justify="center"
+                col=6>
             <v-btn
             depressed
             elevation="2"
@@ -64,8 +73,9 @@
             @click="turnToLogin">Login</v-btn>
         </v-col>
         <v-col 
-        md="3" 
-        offset-md="4">
+        align="center"
+                justify="center"
+                col=6>
             <v-btn
             depressed
             elevation="2"
@@ -92,14 +102,22 @@ const gradients = [
 export default {
     name: 'UserLogin',
 
-    components: {
-
-    },
-
     data: () => ({
-        user_name : 'nyx',
-        gender:'male',
-        age:16,
+        router:{
+            changeData:'/changeuserdata',
+        },
+        user :{
+            accountName:'761447951@qq.com',
+        },
+        user_name : '',
+        gender:'',
+        age:'',
+        weight:'',
+        height :'',
+        chestCircum :'',
+        armCircum :'',
+        hipCircum :'',
+        waistline :'',
 
         width: 2,
         radius: 10,
@@ -116,7 +134,29 @@ export default {
         accumulated_training_hour:100,
         diet_duration:50
     }),
+    mounted() {
+        this.getData()
+    },
     methods: {
+        getData(){
+            console.log('yes');
+            let url='http://124.70.23.6:8080/api/v1/getInfo/'+this.user.accountName;
+            this.$axios.get(url)
+            .then(response=>{
+                console.log('res=>',response.data);
+                let res = response.data;
+                this.user_name = res.userName;
+                this.gender = res.sex;
+                this.age = res.age;
+                this.weight = res.weight;
+                this.height = res.height;
+                this.chestCircum = res.chestCircum;
+                this.armCircum = res.armCircum;
+                this.hipCircum = res.hipCircum;
+                this.waistline = res.waistline;
+            })
+            .catch(error =>console.log(error.data));
+        },
         turnToLogin(){
             this.$router.push("/Login");
         }

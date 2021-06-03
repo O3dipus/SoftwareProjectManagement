@@ -5,42 +5,20 @@
             v-model="valid"
             lazy-validation
         >
+
             <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
+            v-model="foodName"
+            :counter="10"
+            :rules="foodNameRules"
+            label="食物名称"
             required
             ></v-text-field>
 
             <v-text-field
-            v-model="workoutName"
+            v-model="amount"
             :counter="10"
-            :rules="workoutNameRules"
-            label="动作名称"
-            required
-            ></v-text-field>
-
-            <v-text-field
-            v-model="groupNum"
-            :counter="10"
-            :rules="groupNumRules"
-            label="组数"
-            required
-            ></v-text-field>
-
-            <v-text-field
-            v-model="times"
-            :counter="10"
-            :rules="timesRules"
-            label="次数"
-            required
-            ></v-text-field>
-
-            <v-text-field
-            v-model="weight"
-            :counter="10"
-            :rules="weightRules"
-            label="负重(KG)"
+            :rules="amountRules"
+            label="摄入卡路里"
             required
             ></v-text-field>
 
@@ -79,11 +57,11 @@
             <v-card>
                 <!--对话框的标题-->
                 <v-toolbar dense dark color="#424242">
-                    <v-toolbar-title>创建成功</v-toolbar-title>
+                    <v-toolbar-title>更改成功</v-toolbar-title>
                 </v-toolbar>
                 <!--对话框的内容，表单-->
                 <v-card-text class="px-5">
-                    训练计划创建成功
+                    训练计划更改成功
                 </v-card-text>
 
                 <v-card-actions>
@@ -107,54 +85,28 @@ export default {
         valid: true,
         show: false,
 
-        email: '',
-        emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        foodName: '',
+        foodNameRules: [
+        v => !!v || 'foodName is required',
+        v => (v && v.length <= 10) || 'foodName must be less than 10 characters',
         ],
 
-        workoutName: '',
-        workoutNameRules: [
-        v => !!v || 'workoutName is required',
-        v => (v && v.length <= 10) || 'workoutName must be less than 10 characters',
-        ],
-
-        groupNum: '',
-        groupNumRules: [
-        v => !!v || 'groupNum is required',
-        v => (v && !isNaN(v) && v.length <= 2) || 'groupNum must be a number less than 2 characters',
-        ],
-
-        times: '',
-        timesRules: [
-        v => !!v || 'times is required',
-        v => (v && !isNaN(v) && v.length <= 2) || 'times must be a number less than 2 characters',
-        ],
-
-        weight: '',
-        weightRules: [
-        v => !!v || 'weight is required',
-        v => (v && !isNaN(v) && v.length <= 3) || 'weight must be a number less than 3 characters',
+        amount: '',
+        amountRules: [
+        v => !!v || 'amount is required',
+        v => (v && !isNaN(v) && v.length <= 10) || 'amount must be a number less than 10 characters',
         ],
     }),
 
     methods: {
         validate () {
             this.$refs.form.validate();
-            console.log(this.email);
-            console.log(this.workoutName);
-            console.log(this.groupNum);
-            console.log(this.times);
-            console.log(this.weight);
             this.$axios.get(
-                'http://124.70.23.6:8080//api/v1/createTrainingPlan',
+                'http://124.70.23.6:8080//api/v1/createDietPlan',
                 {
                 params: {
-                    accountName: this.email,
-                    workoutName: this.workoutName,
-                    groupNum: this.groupNum,
-                    times: this.times,
-                    weight: this.weight,
+                    foodName: this.workoutName,
+                    amount: this.amount,
                 }
             })
             .then(res=>{
@@ -174,7 +126,7 @@ export default {
         },
         backToHome(){
             //创建成功后跳转到指定页面
-            this.$router.push("/training/home");
+            this.$router.push("/diet/home");
         }
     },
 }

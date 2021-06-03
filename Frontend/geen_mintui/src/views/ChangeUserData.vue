@@ -5,34 +5,28 @@
             v-model="valid"
             lazy-validation
         >
+
             <v-text-field
-            v-model="id"
-            :rules="idRules"
-            label="训练计划id"
+            v-model="age"
+            :counter="10"
+            :rules="ageRules"
+            label="年龄"
             required
             ></v-text-field>
 
             <v-text-field
-            v-model="workoutName"
+            v-model="userName"
             :counter="10"
-            :rules="workoutNameRules"
-            label="动作名称"
+            :rules="userNameRules"
+            label="用户昵称"
             required
             ></v-text-field>
 
             <v-text-field
-            v-model="groupNum"
+            v-model="sex"
             :counter="10"
-            :rules="groupNumRules"
-            label="组数"
-            required
-            ></v-text-field>
-
-            <v-text-field
-            v-model="times"
-            :counter="10"
-            :rules="timesRules"
-            label="次数"
+            :rules="sexRules"
+            label="性别"
             required
             ></v-text-field>
 
@@ -40,9 +34,50 @@
             v-model="weight"
             :counter="10"
             :rules="weightRules"
-            label="负重(KG)"
+            label="体重"
             required
             ></v-text-field>
+
+            <v-text-field
+            v-model="height"
+            :counter="10"
+            :rules="heightRules"
+            label="身高"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="armCircum"
+            :counter="10"
+            :rules="armCircumRules"
+            label="臂围"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="weight"
+            :counter="10"
+            :rules="weightRules"
+            label="胸围"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="hipCircum"
+            :counter="10"
+            :rules="hipCircumRules"
+            label="臀围"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="waistline"
+            :counter="10"
+            :rules="waistlineRules"
+            label="腰围"
+            required
+            ></v-text-field>
+
 
             <v-row>
                 <v-col align="center"
@@ -106,17 +141,18 @@ export default {
     data: () => ({
         valid: true,
         show: false,
+        accountName:'761447951@qq.com',
 
-        id: '',
-        idRules: [
-        v => !!v || 'id is required',
-        v => (v && v.length <= 10) || 'id must be less than 10 characters',
+        age: '',
+        ageRules: [
+        v => !!v || 'age is required',
+        v => (v && !isNaN(v) && v.length <= 3) || 'age must be less than 3 characters',
         ],
 
-        workoutName: '',
-        workoutNameRules: [
-        v => !!v || 'workoutName is required',
-        v => (v && v.length <= 10) || 'workoutName must be less than 10 characters',
+        userName: '',
+        userNameRules: [
+        v => !!v || 'userName is required',
+        v => (v && v.length <= 10) || 'userName must be less than 10 characters',
         ],
 
         groupNum: '',
@@ -125,36 +161,66 @@ export default {
         v => (v && !isNaN(v) && v.length <= 2) || 'groupNum must be a number less than 2 characters',
         ],
 
-        times: '',
-        timesRules: [
-        v => !!v || 'times is required',
-        v => (v && !isNaN(v) && v.length <= 2) || 'times must be a number less than 2 characters',
+        sex: '',
+        sexRules: [
+        v => !!v || 'sex is required',
+        v => (v && v.length <= 2) || 'sex must be a number less than 2 characters',
         ],
 
         weight: '',
         weightRules: [
         v => !!v || 'weight is required',
-        v => (v && !isNaN(v) && v.length <= 3) || 'weight must be a number less than 3 characters',
+        v => (v && !isNaN(v) && v.length <= 4) || 'weight must be a number less than 4 characters',
+        ],
+
+        height: '',
+        heightRules: [
+        v => !!v || 'height is required',
+        v => (v && !isNaN(v) && v.length <= 4) || 'height must be a number less than 4 characters',
+        ],
+
+        chestCircum: '',
+        chestCircumRules: [
+        v => !!v || 'chestCircum is required',
+        v => (v && !isNaN(v) && v.length <= 4) || 'chestCircum must be a number less than 4 characters',
+        ],
+
+        armCircum: '',
+        armCircumRules: [
+        v => !!v || 'armCircum is required',
+        v => (v && !isNaN(v) && v.length <= 4) || 'armCircum must be a number less than 4 characters',
+        ],
+
+        hipCircum: '',
+        hipCircumRules: [
+        v => !!v || 'hipCircum is required',
+        v => (v && !isNaN(v) && v.length <= 4) || 'hipCircum must be a number less than 4 characters',
+        ],
+
+        waistline: '',
+        waistlineRules: [
+        v => !!v || 'waistline is required',
+        v => (v && !isNaN(v) && v.length <= 4) || 'waistline must be a number less than 4 characters',
         ],
     }),
 
     methods: {
         validate () {
             this.$refs.form.validate();
-            console.log(this.id);
-            console.log(this.workoutName);
-            console.log(this.groupNum);
-            console.log(this.times);
-            console.log(this.weight);
             this.$axios.get(
-                'http://124.70.23.6:8080/api/v1/changeTrainingPlan',
+                'http://124.70.23.6:8080/api/v1/changeInfo',
                 {
                 params: {
-                    id: this.id,
-                    workoutName: this.workoutName,
-                    groupNum: this.groupNum,
-                    times: this.times,
+                    accountName: this.accountName,
+                    age: this.age,
+                    userName: this.userName,
+                    sex: this.sex,
                     weight: this.weight,
+                    height: this.height,
+                    chestCircum: this.chestCircum,
+                    armCircum: this.armCircum,
+                    hipCircum: this.hipCircum,
+                    waistline: this.waistline,
                 }
             })
             .then(res=>{

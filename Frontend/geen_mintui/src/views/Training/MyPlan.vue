@@ -4,7 +4,7 @@
         <v-btn
             elevation="2"
             @click="test"
-            class="d-flex align-center justify-center pa-4 mx-auto"
+            class="d-flex justify-center text-center mx-auto align-center"
         >查询</v-btn>
 
         <v-simple-table>
@@ -81,6 +81,10 @@ export default {
             console.log(this.testlist[i].id);
         }
         console.log(this.testlist);
+        console.log('我是傻逼');
+        console.log(this.testlist[1]);
+        console.log('我是傻逼2');
+        console.log('res[1].id=>',this.testlist[1].id);
 
         if(res.data){
             console.log('成功');
