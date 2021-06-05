@@ -11,6 +11,11 @@ import axios from 'axios'
 import qs from'qs'
 import Store from './store/store'
 
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
+
 Vue.use(MintUI)
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs=qs

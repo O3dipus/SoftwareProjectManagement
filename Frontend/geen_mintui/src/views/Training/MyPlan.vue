@@ -80,11 +80,6 @@ export default {
         for(let i in this.testlist){
             console.log(this.testlist[i].id);
         }
-        console.log(this.testlist);
-        console.log('我是傻逼');
-        console.log(this.testlist[1]);
-        console.log('我是傻逼2');
-        console.log('res[1].id=>',this.testlist[1].id);
 
         if(res.data){
             console.log('成功');

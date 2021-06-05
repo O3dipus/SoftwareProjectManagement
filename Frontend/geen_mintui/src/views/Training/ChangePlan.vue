@@ -141,11 +141,6 @@ export default {
     methods: {
         validate () {
             this.$refs.form.validate();
-            console.log(this.id);
-            console.log(this.workoutName);
-            console.log(this.groupNum);
-            console.log(this.times);
-            console.log(this.weight);
             this.$axios.get(
                 'http://124.70.23.6:8080/api/v1/changeTrainingPlan',
                 {

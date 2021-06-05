@@ -15,7 +15,7 @@ const routes = [{
     },
     {
         path: '/',
-        name: 'Login',
+        name: 'Login1',
         component: Login,
         meta: {
             isLogin: false
@@ -32,7 +32,7 @@ const routes = [{
     },
     {
         path: '/Login',
-        name: 'Login',
+        name: 'Login2',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -123,7 +123,7 @@ const routes = [{
     },
     {
         path: '/diet/myplan',
-        name: 'MyPlan',
+        name: 'MyDietPlan',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -132,7 +132,7 @@ const routes = [{
     },
     {
         path: '/diet/changeplan',
-        name: 'ChangePlan',
+        name: 'ChangeDietPlan',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -141,7 +141,7 @@ const routes = [{
     },
     {
         path: '/diet/createplan',
-        name: 'CreatePlan',
+        name: 'CreateDietPlan',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -150,7 +150,7 @@ const routes = [{
     },
     {
         path: '/diet/deleteplan',
-        name: 'DeletePlan',
+        name: 'DeleteDietPlan',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
