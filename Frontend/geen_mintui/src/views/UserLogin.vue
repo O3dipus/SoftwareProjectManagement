@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card>
-                <v-img src="../assets/avatar.jpeg"
+                <v-img src="../assets/fitness.jpg"
                     gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
                     >
                     <v-card-title
@@ -133,11 +133,34 @@ export default {
         autoLineWidth: false,
 
         accumulated_training_hour:100,
-        diet_duration:50
+        diet_duration:50,
+
+        returnlists:[],
+        namelist: [],
     }),
     mounted() {
         this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
         this.getData();
+        this.$axios.get(
+            'http://124.70.23.6:8080/api/v1/course/search',
+            {
+            params: {
+                param: '',
+            }
+        }).then(res=>{
+        this.returnlists=res.data;
+        for(var i in this.returnlists){
+            this.namelist.push(this.returnlists[i].name);
+        }
+        sessionStorage.setItem('namelist',JSON.stringify(this.namelist));
+        if(res.data){
+            console.log('课程查询成功');
+        }
+        else{
+            console.log('课程查询失败');
+        }
+        })
+        .catch(error =>console.log(error.data));
     },
     methods: {
         getData(){

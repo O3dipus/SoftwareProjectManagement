@@ -55,9 +55,9 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="weight"
+            v-model="chestCircum"
             :counter="10"
-            :rules="weightRules"
+            :rules="chestCircumRules"
             label="胸围"
             required
             ></v-text-field>
@@ -155,12 +155,6 @@ export default {
         v => (v && v.length <= 10) || 'userName must be less than 10 characters',
         ],
 
-        groupNum: '',
-        groupNumRules: [
-        v => !!v || 'groupNum is required',
-        v => (v && !isNaN(v) && v.length <= 2) || 'groupNum must be a number less than 2 characters',
-        ],
-
         sex: '',
         sexRules: [
         v => !!v || 'sex is required',
@@ -205,10 +199,20 @@ export default {
     }),
     mounted() {
         this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+        console.log(this.accountName);
     },
     methods: {
         validate () {
             this.$refs.form.validate();
+            console.log("age"+this.age);
+            console.log("userName"+this.userName);
+            console.log("sex"+this.sex);
+            console.log("weight"+this.weight);
+            console.log("height"+this.height);
+            console.log("chestCircum"+this.chestCircum);
+            console.log("armCircum"+this.armCircum);
+            console.log("hipCircum"+this.hipCircum);
+            console.log("waistline"+this.waistline);
             this.$axios.get(
                 'http://124.70.23.6:8080/api/v1/changeInfo',
                 {
@@ -229,7 +233,7 @@ export default {
                 console.log('res=>',res.data);
                 if(res.data){
                 console.log('更改成功');
-                this.show=true;
+                this.$router.push("/");
                 }
                 else{
                 console.log('更改失败');
@@ -242,7 +246,7 @@ export default {
         },
         backToHome(){
             //创建成功后跳转到指定页面
-            this.$router.push("/training/home");
+            this.$router.push("/");
         }
     },
 }

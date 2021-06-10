@@ -4,10 +4,10 @@
             <v-col cols=12>
                 <v-card>
                     <v-img
-                        src="../assets/fitness_plan.jpg"
+                        src="../assets/Food.png"
                         class="align-end"
                         gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
-                        height="200px"
+                        max-height="300px"
                     >
                         <v-card-title
                             class="text-h5"

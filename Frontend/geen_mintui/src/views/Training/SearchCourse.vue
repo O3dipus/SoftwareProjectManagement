@@ -294,7 +294,7 @@ export default {
                 this.namelist.push(this.returnlists[i].name);
                 //console.log(this.namelist);
             }
-                sessionStorage.setItem('namelist',JSON.stringify(this.namelist));
+                //sessionStorage.setItem('namelist',JSON.stringify(this.namelist));
             //sessionStorage.setItem('accountName',JSON.stringify(this.user.accountName));
             if(res.data){
                 console.log('成功');

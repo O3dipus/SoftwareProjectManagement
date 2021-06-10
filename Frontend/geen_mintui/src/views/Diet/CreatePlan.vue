@@ -18,7 +18,7 @@
             v-model="amount"
             :counter="10"
             :rules="amountRules"
-            label="摄入卡路里"
+            label="摄入数量"
             required
             ></v-text-field>
 
@@ -57,11 +57,11 @@
             <v-card>
                 <!--对话框的标题-->
                 <v-toolbar dense dark color="#424242">
-                    <v-toolbar-title>更改成功</v-toolbar-title>
+                    <v-toolbar-title>创建成功</v-toolbar-title>
                 </v-toolbar>
                 <!--对话框的内容，表单-->
                 <v-card-text class="px-5">
-                    训练计划更改成功
+                    饮食计划创建成功
                 </v-card-text>
 
                 <v-card-actions>
