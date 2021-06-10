@@ -84,6 +84,7 @@ export default {
     data: () => ({
         valid: true,
         show: false,
+        accountName:'',
 
         foodName: '',
         foodNameRules: [
@@ -97,15 +98,18 @@ export default {
         v => (v && !isNaN(v) && v.length <= 10) || 'amount must be a number less than 10 characters',
         ],
     }),
-
+    mounted() {
+        this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+    },
     methods: {
         validate () {
             this.$refs.form.validate();
             this.$axios.get(
-                'http://124.70.23.6:8080//api/v1/createDietPlan',
+                'http://124.70.23.6:8080/api/v1/createDietPlan',
                 {
                 params: {
-                    foodName: this.workoutName,
+                    accountName: this.accountName,
+                    foodName: this.foodName,
                     amount: this.amount,
                 }
             })

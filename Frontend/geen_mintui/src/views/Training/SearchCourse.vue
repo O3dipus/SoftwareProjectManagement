@@ -42,6 +42,12 @@
                 <v-btn 
                 icon
                 @click="IdentifyCurId2(item.id)">
+                    <v-icon>mdi-comment-plus</v-icon>
+                </v-btn>
+
+                <v-btn 
+                icon
+                @click="IdentifyCurId3(item.id,item.name)">
                     <v-icon>mdi-playlist-plus</v-icon>
                 </v-btn>
 
@@ -53,7 +59,6 @@
 
             <v-dialog
             v-model="showAddComment"
-            max-width="290"
             >
             <v-card>
                 <v-card-title class="text-h5">
@@ -95,7 +100,6 @@
 
             <v-dialog
             v-model="showViewComment"
-            max-width="290"
             >
             <v-card>
                 <v-card-title class="text-h5">
@@ -136,6 +140,62 @@
             </v-card>
             </v-dialog>
             </v-col>
+
+            <v-col>
+            <v-dialog
+            v-model="showToAddPlan"
+            >
+            <v-card>
+                <v-card-title class="text-h5">
+                添加至我的训练计划
+                </v-card-title>
+
+                <v-card-text>
+                    <v-card
+                        class="mx-auto"
+                        outlined>
+                        <v-list-item three-line>
+                        <v-list-item-content>
+                            <v-text-field
+                            label="请输入组数"
+                            hide-details="auto"
+                            v-model="groupNum"
+                            ></v-text-field>
+                            <v-text-field
+                            label="请输入次数"
+                            hide-details="auto"
+                            v-model="times"
+                            ></v-text-field>
+                            <v-text-field
+                            label="请输入负重"
+                            hide-details="auto"
+                            v-model="weight"
+                            ></v-text-field>
+                        </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </v-card-text>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="addToplan "
+                >
+                    创建
+                </v-btn>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="showToAddPlan = false"
+                >
+                    返回
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+            </v-col>
         </v-row>
     </div>
 </template>
@@ -152,9 +212,19 @@ export default {
         show:false,
         showViewComment:false,
         showAddComment:false,
+        showToAddPlan:false,
         commentText:[{}],
         currentCourseId:'',
+        accountName:'',
+        workoutName:'',
+        groupNum:'',
+        times:'',
+        weight:'',
+        namelist:[],
     }),
+    mounted() {
+        this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+    },
     methods: {
         IdentifyCurId1(id){
             this.showViewComment=true;
@@ -181,13 +251,19 @@ export default {
             console.log('current Id:',id);
             this.currentCourseId=id;
         },
+        IdentifyCurId3(id,workoutname){
+            this.showToAddPlan=true;
+            console.log('current Id:',id);
+            this.currentCourseId=id;
+            this.workoutName=workoutname;
+        },
         addComment(){
             console.log(this.commentText);
             this.$axios.get(
                 'http://124.70.23.6:8080/api/v1/course/addComment',
                 {
                 params: {
-                    accountName: '761447951@qq.com',
+                    accountName: this.accountName,
                     courseId: this.currentCourseId,
                     content: this.commentText,
                 }
@@ -209,15 +285,49 @@ export default {
                 }
             }).then(res=>{
             this.returnlists=res.data;
+            //sessionStorage.setItem('videoSrc','../assets/barbellFullSquat.mp4');
+            //console.log(sessionStorage.getItem('videoSrc'));
             this.show=true;
             console.log(this.returnlists);
-
+            for(var i in this.returnlists){
+                //console.log(this.returnlists[i].name);
+                this.namelist.push(this.returnlists[i].name);
+                //console.log(this.namelist);
+            }
+                sessionStorage.setItem('namelist',JSON.stringify(this.namelist));
+            //sessionStorage.setItem('accountName',JSON.stringify(this.user.accountName));
             if(res.data){
                 console.log('成功');
             }
             else{
                 console.log('失败');
             }
+            })
+            .catch(error =>console.log(error.data));
+        },
+        addToplan(){
+            console.log(this.currentCourseId,this.groupNum,this.times,this.weight);
+            this.$axios.get(
+                'http://124.70.23.6:8080/api/v1/createTrainingPlan',
+                {
+                params: {
+                    accountName: this.accountName,
+                    workoutName: this.workoutName,
+                    groupNum: this.groupNum,
+                    times: this.times,
+                    weight: this.weight,
+                }
+            })
+            .then(res=>{
+                console.log('res=>',res.data);
+                if(res.data){
+                console.log('创建训练成功');
+                this.showToAddPlan = false;
+                }
+                else{
+                console.log('创建训练失败');
+                this.showToAddPlan = false;
+                }
             })
             .catch(error =>console.log(error.data));
         }

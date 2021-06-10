@@ -141,7 +141,7 @@ export default {
     data: () => ({
         valid: true,
         show: false,
-        accountName:'761447951@qq.com',
+        accountName:'',
 
         age: '',
         ageRules: [
@@ -203,7 +203,9 @@ export default {
         v => (v && !isNaN(v) && v.length <= 4) || 'waistline must be a number less than 4 characters',
         ],
     }),
-
+    mounted() {
+        this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+    },
     methods: {
         validate () {
             this.$refs.form.validate();

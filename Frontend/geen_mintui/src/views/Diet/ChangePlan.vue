@@ -114,7 +114,7 @@ export default {
         validate () {
             this.$refs.form.validate();
             this.$axios.get(
-                'http://124.70.23.6:8080//api/v1/changeDietPlan',
+                'http://124.70.23.6:8080/api/v1/changeDietPlan',
                 {
                 params: {
                     id: this.id,

@@ -81,6 +81,7 @@
             elevation="2"
             outlined
             class="pa-2"
+            @click="Logout"
             >Logout</v-btn>
         </v-col>
         </v-row>
@@ -107,7 +108,7 @@ export default {
             changeData:'/changeuserdata',
         },
         user :{
-            accountName:'761447951@qq.com',
+            accountName:'',
         },
         user_name : '',
         gender:'',
@@ -135,7 +136,8 @@ export default {
         diet_duration:50
     }),
     mounted() {
-        this.getData()
+        this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+        this.getData();
     },
     methods: {
         getData(){
@@ -158,6 +160,10 @@ export default {
             .catch(error =>console.log(error.data));
         },
         turnToLogin(){
+            this.$router.push("/Login");
+        },
+        Logout(){
+            sessionStorage.clear();
             this.$router.push("/Login");
         }
     }

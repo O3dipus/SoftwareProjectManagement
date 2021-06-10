@@ -14,7 +14,7 @@
               >Training Plan</v-card-title>
 
               <v-card-subtitle>Fix your customized training plan.</v-card-subtitle>
-              <v-btn plain dense block>Fix Training Plan</v-btn>
+              <v-btn plain dense block router :to="router.fitness">Fix Training Plan</v-btn>
           </v-img>
         </v-card>
       </v-col>
@@ -52,7 +52,7 @@
               >Forum</v-card-title>
 
               <v-card-subtitle>Discuss and make progress.</v-card-subtitle>
-              <v-btn plain dense block>Enter forum</v-btn>
+              <v-btn plain dense block router :to="router.about">Enter forum</v-btn>
           </v-img>
         </v-card>
       </v-col>
@@ -66,7 +66,8 @@
 
     data: () => ({
       router:{
-        fitness:'/training/home'
+        fitness:'/training/home',
+        about:'/about'
       }
     }),
   }

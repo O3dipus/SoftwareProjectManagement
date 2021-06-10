@@ -1,11 +1,6 @@
 <template>
-    <div class="about">
-        <h1>This is an my plan</h1>
-        <v-btn
-            elevation="2"
-            @click="test"
-            class="d-flex justify-center text-center mx-auto align-center"
-        >查询</v-btn>
+    <div class="about pa-2">
+        <h1>My traning plan</h1>
 
         <v-simple-table>
             <template v-slot:default>
@@ -29,6 +24,9 @@
                 <th class="text-left">
                     weight
                 </th>
+                <th class="text-left">
+                    action
+                </th>
                 </tr>
             </thead>
             <tbody>
@@ -38,14 +36,148 @@
                 >
                 <td>{{ item.id }}</td>
                 <td>{{ item.workoutName }}</td>
-                <td>{{ item.date }}</td>
+                <td>{{ dateFormat(item.date).slice(0,10) }}</td>
                 <td>{{ item.groupNum }}</td>
                 <td>{{ item.times }}</td>
                 <td>{{ item.weight }}</td>
+                <td><v-btn
+                    color="grey darken-1"
+                    class="d-flex"
+                    @click="deletePlan(item.id)"
+                ><v-icon>mdi-delete-circle</v-icon></v-btn>
+                </td>
                 </tr>
             </tbody>
             </template>
         </v-simple-table>
+
+        <!--弹出的对话框-->
+        <v-dialog max-width="500" v-model="show" persistent>
+            <v-card>
+                <!--对话框的标题-->
+                <v-toolbar dense dark color="#424242">
+                    <v-toolbar-title>删除成功</v-toolbar-title>
+                </v-toolbar>
+                <!--对话框的内容，表单-->
+                <v-card-text class="px-5">
+                    训练计划删除成功
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="#424242"
+                        text
+                        @click="show=false"
+                    >
+                        返回
+                    </v-btn>
+                    </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-row class="pa-6">
+            <v-col align="center"
+            justify="center"
+            col=6>
+                <v-btn
+                :disabled="!valid"
+                color="grey"
+                class="mr-4"
+                @click="addToHistory"
+                >
+                添加到训练记录
+                </v-btn>
+            </v-col>
+
+            <v-col 
+            align="center"
+            justify="center"
+            col=6>
+                <v-btn
+                color="grey"
+                class="mr-4"
+                router :to="router.trainingHome"
+                >
+                返回主页
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <h1>获取训练容量</h1>
+            </v-col>
+            
+            <v-col cols="8">
+                <v-select outlined label="日期" :items="datelist" v-model="selectDate"></v-select>
+            </v-col>
+            <v-col cols="4">
+                <v-btn
+                color="grey"
+                class="mr-4"
+                @click="checkCapacity"
+                >
+                查询训练容量
+                </v-btn>
+            </v-col>
+            <v-col cols="8">
+                <v-text-field
+                v-model="capacity"
+                label="当日训练容量"
+                solo
+                readonly
+                ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+                <v-btn
+                color="grey"
+                class="mr-4"
+                @click="showDialog = true"
+                >
+                添加到训练记录
+                </v-btn>
+            </v-col>
+
+            <v-dialog
+            v-model="showDialog"
+            >
+            <v-card>
+                <v-card-title class="text-h5">
+                添加至我的训练记录
+                </v-card-title>
+
+                <v-card-text>
+                    <v-card
+                        class="mx-auto"
+                        outlined>
+                        <v-list-item three-line>
+                        <v-list-item-content>
+                            <v-select outlined label="请选择锻炼部位" :items="categoryList" v-model="category"></v-select>
+                        </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </v-card-text>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="addToHistory"
+                >
+                    添加
+                </v-btn>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="showDialog = false"
+                >
+                    返回
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
@@ -53,22 +185,26 @@
 
 export default {
     data: () => ({
-    user: {
-        accountName:'761447951@qq.com',
-    },
-    returnList: [{
-        id:[],
-        accountName:[],
-        date:[],
-        groupNum:[],
-        times:[],
-        weight:[],
-        workoutName:[],
-    }],
-    testlist: [{}]
+        accountName:JSON.parse(sessionStorage.getItem('accountName')),
+        show: false,
+        valid: true,
+        user: {
+            accountName:'',
+        },
+        router:{
+            trainingHome:'/training/home',
+        },
+        testlist: [{}],
+        datelist:[],
+        selectDate:'',
+        capacity:'',
+        showDialog: false,
+        category:'',
+        categoryList:['胸','背','腿','肩','三头','二头','腹'],
     }),
-    methods: {
-    test(){
+    mounted() {
+        this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+        
         this.$axios.get(
             'http://124.70.23.6:8080/api/v1/trainingPlan',
             {
@@ -77,9 +213,12 @@ export default {
             }
         }).then(res=>{
         this.testlist=res.data;
-        for(let i in this.testlist){
-            console.log(this.testlist[i].id);
+        console.log(this.testlist);
+        for(var i in this.testlist){
+            //console.log(this.returnlists[i].name);
+            this.datelist.push(this.dateFormat(this.testlist[i].date).slice(0,10));
         }
+        console.log(this.datelist);
 
         if(res.data){
             console.log('成功');
@@ -89,6 +228,84 @@ export default {
         }
         })
         .catch(error =>console.log(error.data));
+    },
+    methods: {
+        deletePlan(id){
+            console.log(id);
+            let url='http://124.70.23.6:8080/api/v1/deleteTrainingPlan/'+id;
+            this.$axios.get(url)
+            .then(res=>{
+                console.log('res=>',res.data);
+                if(res.data){
+                console.log('删除成功');
+                this.show=true;
+                this.$router.push("/training/myPlan");
+                }
+                else{
+                console.log('删除失败');
+                }
+            })
+        },
+        addToHistory(){
+            console.log(this.accountName,this.category,this.capacity,this.selectDate);
+            this.$axios.get(
+            'http://124.70.23.6:8080/api/v1/addTrainingRecord',
+            {
+            params: {
+                accountName: this.accountName,
+                category: this.category,
+                capacity:this.capacity,
+                time: this.selectDate,
+            }
+            })
+            .then(res=>{
+                console.log('res=>',res.data);
+                this.capacity=res.data;
+                if(res.data){
+                console.log('成功');
+                this.showDialog = false;
+                }
+                else{
+                console.log('失败');
+                }
+            })
+            .catch(error =>console.log(error.data));
+        },
+        checkCapacity(){
+            console.log(this.selectDate);
+            this.$axios.get(
+            'http://124.70.23.6:8080/api/v1/trainingPlan/capacity',
+            {
+            params: {
+                accountName: this.accountName,
+                time: this.selectDate,
+            }
+            })
+            .then(res=>{
+                console.log('res=>',res.data);
+                this.capacity=res.data;
+                if(res.data){
+                console.log('成功');
+                }
+                else{
+                console.log('失败');
+                }
+            })
+            .catch(error =>console.log(error.data));
+        },
+        dateFormat:function(time) {
+            var date=new Date(time);
+            var year=date.getFullYear();
+            /* 在日期格式中，月份是从0开始的，因此要加0
+            * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+            * */
+            var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+            var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+            var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+            var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+            var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+            // 拼接
+            return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
         }
     }
 }

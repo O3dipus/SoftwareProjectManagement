@@ -1,12 +1,6 @@
 <template>
   <!--在视频外面加一个容器-->
     <div class="input_video">
-    <v-btn
-    class="mr-4"
-    @click="showVideo(false)"
-    >
-    Reset Form
-    </v-btn>
     <video-player  
     class="video-player vjs-custom-skin"
     ref="videoPlayer"
@@ -20,25 +14,15 @@
 
 export default {
   methods: {
-    showVideo (bol) {
-      let myPlayer = this.$refs.videoPlayer.player;
-      if( bol ) {
-          myPlayer.src(this.getUserType); //根据userType的不同展示不同的视频地址
-        return false
-      };
-    }
+    playVideo(url){
+      let vdo = document.getElementById("playVideos")
+      vdo.src=url;
+      vdo.play();
+    },
   },
-  computed: {
-    getUserType () {
-        let userType = parseInt(this.userInfo.userType);
-        let videoSrc = ""
-        if(userType === 1){
-            videoSrc = "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-        }else if (userType === 2){
-            videoSrc = "http://www.17sucai.com/preview/501914/2017-08-04/%E9%A1%B5%E9%9D%A2/media/mov_bbb.mp4"
-        }
-        return videoSrc;
-    }
+  created: function() {
+    this.playerOptions.sources.src=sessionStorage.getItem('videoSrc');
+    console.log(this.playerOptions.sources.src);
   },
   data:() =>({
     userType:1,
@@ -54,7 +38,8 @@ export default {
       fluid : true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
       sources : [ {
           type : "",
-          src : 'https://blz-videos.nosdn.127.net/1/OverWatch/OVR_D.VA_SHOOTING_STAR_zhCN_YT_PC_3.mp4'//url地址
+          //src : JSON.parse(sessionStorage.getItem('videoSrc'))//url地址
+          src: require('../assets/杠铃深蹲.mp4')
       } ],
       poster : "", //你的封面地址
       // width: document.documentElement.clientWidth,

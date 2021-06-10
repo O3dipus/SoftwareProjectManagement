@@ -23,7 +23,7 @@
                             input=""
                             prepend-icon="mdi-email"
                             type="text"
-                            color="teal accent-3"
+                            color="teal--#424242"
                           />
 
                           <v-text-field
@@ -33,16 +33,16 @@
                             v-model="user.password"
                             prepend-icon="mdi-login"
                             type="password"
-                            color="teal accent-3"
+                            color="teal--#424242"
                           />
                         </v-form>
                         <h3 class="text-center mt-4">Forgot your password ?</h3>
                       </v-card-text>
                       <div class="text-center mt-3">
-                        <v-btn rounded color="teal accent-3 grey darken-3" dark @click="Login()">SIGN IN</v-btn>
+                        <v-btn rounded color="teal--#424242 grey darken-3" dark @click="Login()">SIGN IN</v-btn>
                       </div>
                     </v-col>
-                    <v-col cols="12" md="4" class="teal accent-3 grey darken-3" >
+                    <v-col cols="12" md="4" class="teal--#424242 grey darken-3" >
                       <v-card-text class="white--text mt-12" >
                         <h1 class="text-center display-1">Hello, Friend!</h1>
                         <h5
@@ -58,7 +58,7 @@
 
                 <v-window-item :value="2">
                   <v-row class="fill-height">
-                    <v-col cols="12" md="4" class="teal accent-3 grey darken-3">
+                    <v-col cols="12" md="4" class="teal--#424242 grey darken-3">
                       <v-card-text class="white--text mt-12">
                         <h1 class="text-center display-1">Welcome Back!</h1>
                         <h5
@@ -76,29 +76,31 @@
                         <h4 class="text-center mt-4">Ensure your email for registration</h4>
                         <v-form>
                           <v-text-field
-                            label="Name"
-                            name="Name"
-                            type="text"
-                            color="teal accent-3"
+                            label="Account Name"
+                            name="Account Name"
+                            v-model="register.accountName"
+                            type="Account Name"
+                            color="teal--#424242"
                           />
-                          <v-text-field
-                            label="Email"
-                            name="Email"
-                            type="text"
-                            color="teal accent-3"
-                          />
-
                           <v-text-field
                             id="password"
                             label="Password"
+                            v-model="register.accountName"
                             name="password"
                             type="password"
-                            color="teal accent-3"
+                            color="teal--#424242"
+                          />
+                          <v-text-field
+                            id="CheckPassword"
+                            label="CheckPassword"
+                            name="CheckPassword"
+                            type="CheckPassword"
+                            color="teal--#424242"
                           />
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5">
-                        <v-btn rounded color="teal accent-3 grey darken-3" dark>SIGN UP</v-btn>
+                        <v-btn rounded color="teal--#424242 grey darken-3" dark @click="Register">SIGN UP</v-btn>
                       </div>
                     </v-col>
                   </v-row>
@@ -117,6 +119,10 @@ export default {
   data: () => ({
     step: 1,
     user: {
+      accountName:'',
+      password:''
+    },
+    register: {
       accountName:'',
       password:''
     }
@@ -140,10 +146,38 @@ export default {
         if(res.data){
           console.log('登陆成功');
           //登录成功后跳转到指定页面
+          sessionStorage.clear();
+          sessionStorage.setItem('accountName',JSON.stringify(this.user.accountName));
+          console.log('session');
           this.$router.push("/");
         }
         else{
           console.log('登陆失败');
+        }
+      })
+      .catch(error =>console.log(error.data));
+    },
+    Register(){
+      this.$axios.get(
+        'http://124.70.23.6:8080/api/v1/register',
+        {
+          params: {
+            accountName: this.register.accountName,
+            password: this.register.password
+          }
+      })
+      .then(res=>{
+        console.log('res=>',res.data);
+        if(res.data){
+          console.log('注册成功');
+          //登录成功后跳转到指定页面
+          sessionStorage.clear();
+          sessionStorage.setItem('accountName',JSON.stringify(this.register.accountName));
+          console.log('session');
+          this.$router.push("/");
+        }
+        else{
+          console.log('注册失败');
         }
       })
       .catch(error =>console.log(error.data));

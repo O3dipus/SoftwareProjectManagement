@@ -5,12 +5,6 @@
             v-model="valid"
             lazy-validation
         >
-            <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-            ></v-text-field>
 
             <v-text-field
             v-model="workoutName"
@@ -107,12 +101,6 @@ export default {
         valid: true,
         show: false,
 
-        email: '',
-        emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        ],
-
         workoutName: '',
         workoutNameRules: [
         v => !!v || 'workoutName is required',
@@ -137,7 +125,9 @@ export default {
         v => (v && !isNaN(v) && v.length <= 3) || 'weight must be a number less than 3 characters',
         ],
     }),
-
+    mounted() {
+        this.email=JSON.parse(sessionStorage.getItem('accountName'));
+    },
     methods: {
         validate () {
             this.$refs.form.validate();
@@ -147,7 +137,7 @@ export default {
             console.log(this.times);
             console.log(this.weight);
             this.$axios.get(
-                'http://124.70.23.6:8080//api/v1/createTrainingPlan',
+                'http://124.70.23.6:8080/api/v1/createTrainingPlan',
                 {
                 params: {
                     accountName: this.email,
