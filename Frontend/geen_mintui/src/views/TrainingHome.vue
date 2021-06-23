@@ -51,7 +51,7 @@
                 </v-card>
             </v-col>
 
-
+            <!--
             <v-col cols=6>
                 <v-card>
                     <v-img
@@ -86,7 +86,7 @@
                     </v-img>
                 </v-card>
             </v-col>
-
+            -->
             
             <v-col cols=12>
                 <v-card>

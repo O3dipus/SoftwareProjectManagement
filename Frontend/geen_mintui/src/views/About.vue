@@ -1,12 +1,18 @@
 <template>
   <!--在视频外面加一个容器-->
     <div class="input_video">
-    <video-player  
-    class="video-player vjs-custom-skin"
-    ref="videoPlayer"
-    :playsinline="true"
-    :options="playerOptions"
-    ></video-player>
+      <video-player  
+      class="video-player vjs-custom-skin"
+      ref="videoPlayer"
+      :playsinline="true"
+      :options="playerOptions"
+      ></video-player>
+
+      <v-btn
+        color="grey darken-1"
+        class="d-flex"
+        @click="back"
+      >返回</v-btn>
     </div>
 </template>
 
@@ -14,19 +20,17 @@
 
 export default {
   methods: {
-    playVideo(url){
-      let vdo = document.getElementById("playVideos")
-      vdo.src=url;
-      vdo.play();
-    },
+    back(){
+      this.$router.push("/training/searchCourse");
+    }
   },
   created: function() {
-    this.playerOptions.sources.src=sessionStorage.getItem('videoSrc');
-    console.log(this.playerOptions.sources.src);
+    console.log(JSON.parse(sessionStorage.getItem('videoSrc')));
   },
   data:() =>({
-    userType:1,
+    show: false,
     videoModal: true,
+    videoSource:'',
     playerOptions:{
       playbackRates : [ 0.5, 1.0, 1.5, 2.0 ], //可选择的播放速度
       autoplay : false, //如果true,浏览器准备好时开始回放。
@@ -38,8 +42,7 @@ export default {
       fluid : true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
       sources : [ {
           type : "",
-          //src : JSON.parse(sessionStorage.getItem('videoSrc'))//url地址
-          src: require('../assets/杠铃深蹲.mp4')
+          src: JSON.parse(sessionStorage.getItem('videoSrc')),
       } ],
       poster : "", //你的封面地址
       // width: document.documentElement.clientWidth,

@@ -155,6 +155,7 @@ export default {
         sessionStorage.setItem('namelist',JSON.stringify(this.namelist));
         if(res.data){
             console.log('课程查询成功');
+            console.log("动作:"+JSON.parse(sessionStorage.getItem('namelist')));
         }
         else{
             console.log('课程查询失败');

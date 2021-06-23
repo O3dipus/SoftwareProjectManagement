@@ -25,7 +25,10 @@
                     weight
                 </th>
                 <th class="text-left">
-                    action
+                    delete
+                </th>
+                <th class="text-left">
+                    modify
                 </th>
                 </tr>
             </thead>
@@ -45,6 +48,12 @@
                     class="d-flex"
                     @click="deletePlan(item.id)"
                 ><v-icon>mdi-delete-circle</v-icon></v-btn>
+                </td>
+                <td><v-btn
+                    color="grey darken-1"
+                    class="d-flex"
+                    @click="modifyPlan(item.id)"
+                ><v-icon>mdi-clipboard-edit</v-icon></v-btn>
                 </td>
                 </tr>
             </tbody>
@@ -178,6 +187,85 @@
             </v-card>
             </v-dialog>
         </v-row>
+
+        <v-dialog
+            v-model="showModifyPlan"
+            >
+            <v-card>
+                <v-card-title class="text-h5">
+                更改训练计划
+                </v-card-title>
+
+                <v-card-text>
+                    <v-card
+                        class="mx-auto"
+                        outlined>
+                        <v-list-item three-line>
+                        <v-list-item-content>
+                            <td>
+                            <v-select 
+                            outlined 
+                            label="请选择要更改的动作" 
+                            :items="workoutNameList" 
+                            v-model="modifyInfo.workoutName"
+                            ></v-select>
+                            </td>
+                            <td>
+                            <v-text-field
+                            label="请输入组数"
+                            hide-details="auto"
+                            v-model="modifyInfo.groupNum"
+                            ></v-text-field>
+                            </td>
+                            <td>
+                            <v-text-field
+                            label="请输入次数"
+                            hide-details="auto"
+                            v-model="modifyInfo.times"
+                            ></v-text-field>
+                            </td>
+                            <td>
+                            <v-text-field
+                            label="请输入负重（KG）"
+                            hide-details="auto"
+                            v-model="modifyInfo.weight"
+                            ></v-text-field>
+                            </td>
+                        </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </v-card-text>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="modifyThePlan"
+                >
+                    更改
+                </v-btn>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="showModifyPlan = false"
+                >
+                    返回
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+            <v-alert
+            v-model="alert"
+            dismissible
+            color="teal--#424242"
+            border="left"
+            elevation="2"
+            colored-border
+            >
+            {{this.alertMessage}}
+            </v-alert>
     </div>
 </template>
 
@@ -186,7 +274,11 @@
 export default {
     data: () => ({
         accountName:JSON.parse(sessionStorage.getItem('accountName')),
+        workoutNameList:[],
         show: false,
+        alert:false,
+        alertMessage:'',
+        showModifyPlan:false,
         valid: true,
         user: {
             accountName:'',
@@ -201,10 +293,17 @@ export default {
         showDialog: false,
         category:'',
         categoryList:['胸','背','腿','肩','三头','二头','腹'],
+        modifyInfo:{
+            id:'',
+            workoutName:'',
+            groupNum:'',
+            times:'',
+            weight:'',
+        }
     }),
     mounted() {
         this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
-        
+        this.workoutNameList=JSON.parse(sessionStorage.getItem('namelist'));
         this.$axios.get(
             'http://124.70.23.6:8080/api/v1/trainingPlan',
             {
@@ -230,6 +329,41 @@ export default {
         .catch(error =>console.log(error.data));
     },
     methods: {
+        modifyPlan(id){
+            console.log(id);
+            this.showModifyPlan=true;
+            this.modifyInfo.id=id;
+        },
+        modifyThePlan(){
+            this.$axios.get(
+                'http://124.70.23.6:8080/api/v1/changeTrainingPlan',
+                {
+                params: {
+                    id: this.modifyInfo.id,
+                    workoutName: this.modifyInfo.workoutName,
+                    groupNum: this.modifyInfo.groupNum,
+                    times: this.modifyInfo.times,
+                    weight: this.modifyInfo.weight,
+                }
+            })
+            .then(res=>{
+                console.log('res=>',res.data);
+                if(res.data){
+                console.log('更改成功');
+                this.showModifyPlan=false;
+                this.alertMessage='更改成功';
+                this.alert=true;
+                location.reload();
+                }
+                else{
+                console.log('更改失败');
+                this.showModifyPlan=false;
+                this.alertMessage='更改失败';
+                this.alert=true;
+                }
+            })
+            .catch(error =>console.log(error.data));
+        },
         deletePlan(id){
             console.log(id);
             let url='http://124.70.23.6:8080/api/v1/deleteTrainingPlan/'+id;
@@ -238,11 +372,16 @@ export default {
                 console.log('res=>',res.data);
                 if(res.data){
                 console.log('删除成功');
-                this.show=true;
-                this.$router.push("/training/myPlan");
+                this.showModifyPlan=false;
+                this.alertMessage='删除成功';
+                this.alert=true;
+                location.reload();
                 }
                 else{
                 console.log('删除失败');
+                this.showModifyPlan=false;
+                this.alertMessage='删除失败';
+                this.alert=true;
                 }
             })
         },

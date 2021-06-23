@@ -100,7 +100,10 @@ export default {
     data: () => ({
         valid: true,
         show: false,
-
+        param:'',
+        returnlists: [{}],
+        namelist:[],
+        
         workoutName: '',
         workoutNameRules: [
         v => !!v || 'workoutName is required',
@@ -127,6 +130,7 @@ export default {
     }),
     mounted() {
         this.email=JSON.parse(sessionStorage.getItem('accountName'));
+        this.workoutName=JSON.parse(sessionStorage.getItem('namelist'));
     },
     methods: {
         validate () {

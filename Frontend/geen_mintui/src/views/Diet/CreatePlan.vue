@@ -5,20 +5,17 @@
             v-model="valid"
             lazy-validation
         >
-
-            <v-text-field
-            v-model="foodName"
-            :counter="10"
-            :rules="foodNameRules"
-            label="食物名称"
-            required
-            ></v-text-field>
+            <v-select 
+            outlined 
+            label="食物名称" 
+            :items="foodList" 
+            v-model="foodName"></v-select>
 
             <v-text-field
             v-model="amount"
             :counter="10"
             :rules="amountRules"
-            label="摄入数量"
+            label="摄入数量(单位：g)"
             required
             ></v-text-field>
 
@@ -85,12 +82,9 @@ export default {
         valid: true,
         show: false,
         accountName:'',
+        foodList:[],
 
         foodName: '',
-        foodNameRules: [
-        v => !!v || 'foodName is required',
-        v => (v && v.length <= 10) || 'foodName must be less than 10 characters',
-        ],
 
         amount: '',
         amountRules: [
@@ -100,6 +94,22 @@ export default {
     }),
     mounted() {
         this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+        this.$axios.get(
+            'http://124.70.23.6:8080/api/v1/food')
+        .then(res=>{
+        this.returnlists=res.data;
+        for(var i in this.returnlists){
+            this.foodList.push(this.returnlists[i].name);
+        }
+        console.log(this.foodList);
+        if(res.data){
+            console.log('成功');
+        }
+        else{
+            console.log('失败');
+        }
+        })
+        .catch(error =>console.log(error.data));
     },
     methods: {
         validate () {

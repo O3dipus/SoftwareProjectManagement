@@ -51,6 +51,13 @@
                     <v-icon>mdi-playlist-plus</v-icon>
                 </v-btn>
 
+                
+                <v-btn 
+                    icon
+                    @click="IdentifyCurId4(item.name)">
+                    <v-icon>mdi-play</v-icon>
+                </v-btn>
+
                 </v-card-actions>
             </v-card>
 
@@ -167,7 +174,7 @@
                             v-model="times"
                             ></v-text-field>
                             <v-text-field
-                            label="请输入负重"
+                            label="请输入负重（KG）"
                             hide-details="auto"
                             v-model="weight"
                             ></v-text-field>
@@ -224,6 +231,28 @@ export default {
     }),
     mounted() {
         this.accountName=JSON.parse(sessionStorage.getItem('accountName'));
+        console.log(this.param);
+        this.$axios.get(
+            'http://124.70.23.6:8080/api/v1/course/search',
+            {
+            params: {
+                param: this.param,
+            }
+        }).then(res=>{
+        this.returnlists=res.data;
+        this.show=true;
+        console.log(this.returnlists);
+        for(var i in this.returnlists){
+            this.namelist.push(this.returnlists[i].name);
+        }
+        if(res.data){
+            console.log('成功');
+        }
+        else{
+            console.log('失败');
+        }
+        })
+        .catch(error =>console.log(error.data));
     },
     methods: {
         IdentifyCurId1(id){
@@ -256,6 +285,11 @@ export default {
             console.log('current Id:',id);
             this.currentCourseId=id;
             this.workoutName=workoutname;
+        },
+        IdentifyCurId4(name){
+            console.log(name);
+            sessionStorage.setItem('videoSrc',JSON.stringify("http://124.70.23.6/"+name+".mp4"));
+            this.$router.push("/about");
         },
         addComment(){
             console.log(this.commentText);

@@ -19,7 +19,10 @@
                     date
                 </th>
                 <th class="text-left">
-                    option
+                    delte
+                </th>
+                <th class="text-left">
+                    modify
                 </th>
                 </tr>
             </thead>
@@ -30,13 +33,18 @@
                 >
                 <td>{{ item.id }}</td>
                 <td>{{ item.foodName }}</td>
-                <td>{{ item.amount }}</td>
+                <td>{{ item.amount +"g"}}</td>
                 <td>{{ dateFormat(item.date).slice(0,10) }}</td>
                 <td><v-btn
                     color="grey darken-1"
                     class="d-flex"
                     @click="deletePlan(item.id)"
                 ><v-icon>mdi-delete-circle</v-icon></v-btn>
+                <td><v-btn
+                    color="grey darken-1"
+                    class="d-flex"
+                    @click="showModifyDietPlan(item.id)"
+                ><v-icon>mdi-clipboard-edit</v-icon></v-btn>
                 </td>
                 </tr>
             </tbody>
@@ -81,7 +89,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                        <td>{{ nutritionlist.carbohydrate }}</td>
+                        <td>{{ nutritionlist.carbohydrate}}</td>
                         <td>{{ nutritionlist.fat }}</td>
                         <td>{{ nutritionlist.protein }}</td>
                         <td>{{ nutritionlist.vitamin }}</td>
@@ -91,6 +99,71 @@
                 </v-simple-table>
             </v-col>
         </v-row>
+
+        <v-dialog
+            v-model="showModifyDialog"
+            >
+            <v-card>
+                <v-card-title class="text-h5">
+                更改饮食计划
+                </v-card-title>
+
+                <v-card-text>
+                    <v-card
+                        class="mx-auto"
+                        outlined>
+                        <v-list-item three-line>
+                        <v-list-item-content>
+                            <td>
+                            <v-text-field
+                            label="请输入食物名称"
+                            hide-details="auto"
+                            v-model="modifyDietPlan.foodName"
+                            ></v-text-field>
+                            </td>
+                            <td>
+                            <v-text-field
+                            label="请输入数量(单位：g)"
+                            hide-details="auto"
+                            v-model="modifyDietPlan.amount"
+                            ></v-text-field>
+                            </td>
+                        </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </v-card-text>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="modifyTheDietPlan"
+                >
+                    更改
+                </v-btn>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="showModifyDialog = false"
+                >
+                    返回
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+
+            
+            <v-alert
+            v-model="alert"
+            dismissible
+            color="teal--#424242"
+            border="left"
+            elevation="2"
+            colored-border
+            >
+            {{this.alertMessgae}}
+            </v-alert>
     </div>
 </template>
 
@@ -105,6 +178,14 @@ export default {
         nutritionlist:'',
         datelist:[],
         selectDate:'',
+        showModifyDialog:false,
+        modifyDietPlan:{
+            id:'',
+            foodName:'',
+            amount:'',
+        },
+        alert:false,
+        alertMessgae:'',
     }),
     mounted() {
         this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
@@ -145,12 +226,48 @@ export default {
             }).then(res=>{
             this.nutritionlist=res.data;
             console.log(this.nutritionlist)
-            if(res.data){
-                console.log('成功');
+            if(res.data.carbohydrate != 0){
+                console.log('查询成功');
             }
             else{
                 console.log('失败');
+                this.alertMessgae="查询失败，请选择日期";
+                this.alert=true;
             }
+            })
+            .catch(error =>console.log(error.data));
+        },
+        showModifyDietPlan(id){
+            console.log(id);
+            this.modifyDietPlan.id=id;
+            this.showModifyDialog=true;
+        },
+        modifyTheDietPlan(){
+            this.$axios.get(
+                'http://124.70.23.6:8080/api/v1/changeDietPlan',
+                {
+                params: {
+                    id: this.modifyDietPlan.id,
+                    foodName: this.modifyDietPlan.foodName,
+                    amount: this.modifyDietPlan.amount,
+                }
+            })
+            .then(res=>{
+                console.log('res=>',res.data);
+                if(res.data){
+                console.log('更改成功');
+                this.showModifyDialog=false;
+                this.alertMessgae="更改成功";
+                this.alert=true;
+                location.reload();
+                }
+                else{
+                console.log('更改失败');
+                this.showModifyDialog=false;
+                this.alertMessgae="更改失败";
+                this.alert=true;
+                location.reload();
+                }
             })
             .catch(error =>console.log(error.data));
         },
