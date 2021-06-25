@@ -86,6 +86,7 @@
         </v-dialog>
 
         <v-row class="pa-6">
+            <!--
             <v-col align="center"
             justify="center"
             col=6>
@@ -98,7 +99,7 @@
                 添加到训练记录
                 </v-btn>
             </v-col>
-
+            -->
             <v-col 
             align="center"
             justify="center"
@@ -118,7 +119,19 @@
             </v-col>
             
             <v-col cols="8">
-                <v-select outlined label="日期" :items="datelist" v-model="selectDate"></v-select>
+                <v-select outlined label="可选日期" :items="datelist" v-model="selectDate"></v-select>
+            </v-col>
+            <v-col 
+            class="my-2 px-1"
+            cols="8"
+            sm="6"
+            
+            >
+            <v-date-picker
+                color="blue-grey lighten-2"
+                v-model="date"
+                @click:date="test"
+            ></v-date-picker>
             </v-col>
             <v-col cols="4">
                 <v-btn
@@ -141,7 +154,7 @@
                 <v-btn
                 color="grey"
                 class="mr-4"
-                @click="showDialog = true"
+                @click="Detect"
                 >
                 添加到训练记录
                 </v-btn>
@@ -273,6 +286,7 @@
 
 export default {
     data: () => ({
+        date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         accountName:JSON.parse(sessionStorage.getItem('accountName')),
         workoutNameList:[],
         show: false,
@@ -299,7 +313,7 @@ export default {
             groupNum:'',
             times:'',
             weight:'',
-        }
+        },
     }),
     mounted() {
         this.user.accountName=JSON.parse(sessionStorage.getItem('accountName'));
@@ -445,7 +459,21 @@ export default {
             var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
             // 拼接
             return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
-        }
+        },
+        Detect(){
+            if(this.capacity == '0'){
+                //this.alertMessage='容量为0';
+                this.alert=true;
+                console.log("DDDDD");
+            }
+            else{
+                this.showDialog = true;
+            }
+        },
+        test(date){
+            console.log(date);
+            this.selectDate=date;
+        },
     }
 }
 </script>

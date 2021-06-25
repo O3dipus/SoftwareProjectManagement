@@ -2,53 +2,86 @@
     <v-container>
         <v-row>
             <v-col cols=12>
-                <v-card>
-                    <v-img
-                        src="../assets/FixPlan.png"
-                        class="align-end"
-                        gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
-                        height="400px"
+                <v-carousel
+                    cycle
+                    height="400"
+                    hide-delimiter-background
+                    show-arrows-on-hover
+                >
+                    <v-carousel-item
+                    v-for="(item,i) in items"
+                    :key="i"
+                    :src="item.src"
                     >
-                        <v-card-title
-                            class="text-h5"
-                        >Fix Plan</v-card-title>
+                    </v-carousel-item>
+                </v-carousel>
+            </v-col>
+            <v-col cols=12>
+                <v-hover
+                v-slot="{ hover }"
+                >
+                    <v-card
+                    :elevation="hover ? 16 : 2"
+                    :class="{ 'on-hover': hover }">
+                        <v-img
+                            src="../assets/FixPlan.jpg"
+                            class="align-end"
+                            gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
+                            height="400px"
+                        >
+                            <v-card-title
+                                class="text-h5"
+                            >Fix Plan</v-card-title>
 
-                        <v-card-subtitle>Fix your customized training plan today.</v-card-subtitle>
-                        <v-btn plain dense block router :to="router.fix">Fix Training Plan</v-btn>
-                    </v-img>
-                </v-card>
+                            <v-card-subtitle>Fix your customized training plan today.</v-card-subtitle>
+                            <v-btn plain dense block router :to="router.fix">Fix Training Plan</v-btn>
+                        </v-img>
+                    </v-card>
+                </v-hover>
             </v-col>
             <v-col cols=6>
-                <v-card>
-                    <v-img
-                        src="../assets/Search.png"
-                        class="align-end"
-                        gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
-                    >
-                        <v-card-title
-                            class="text-h5"
-                        >Search for course</v-card-title>
+                <v-hover
+                v-slot="{ hover }"
+                >
+                    <v-card
+                    :elevation="hover ? 16 : 2"
+                    :class="{ 'on-hover': hover }">
+                        <v-img
+                            src="../assets/TrainingCourse.png"
+                            class="align-end"
+                            gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
+                        >
+                            <v-card-title
+                                class="text-h5"
+                            >Search for course</v-card-title>
 
-                        <v-card-subtitle>Search for the course information</v-card-subtitle>
-                        <v-btn plain dense block router :to="router.searchCource">Search for course</v-btn>
-                    </v-img>
-                </v-card>
+                            <v-card-subtitle>Search for the course information</v-card-subtitle>
+                            <v-btn plain dense block router :to="router.searchCource">Search for course</v-btn>
+                        </v-img>
+                    </v-card>
+                </v-hover>
             </v-col>
             <v-col cols=6>
-                <v-card>
-                    <v-img
-                        src="../assets/history.png"
-                        class="align-end"
-                        gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
-                    >
-                        <v-card-title
-                            class="text-h5"
-                        >History</v-card-title>
+                <v-hover
+                v-slot="{ hover }"
+                >
+                    <v-card
+                    :elevation="hover ? 16 : 2"
+                    :class="{ 'on-hover': hover }">
+                        <v-img
+                            src="../assets/MyRecord.png"
+                            class="align-end"
+                            gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
+                        >
+                            <v-card-title
+                                class="text-h5"
+                            >History</v-card-title>
 
-                        <v-card-subtitle>View your history training routine.</v-card-subtitle>
-                        <v-btn plain dense block router :to="router.history">History</v-btn>
-                    </v-img>
-                </v-card>
+                            <v-card-subtitle>View your history training routine.</v-card-subtitle>
+                            <v-btn plain dense block router :to="router.history">History</v-btn>
+                        </v-img>
+                    </v-card>
+                </v-hover>
             </v-col>
 
             <!--
@@ -89,20 +122,26 @@
             -->
             
             <v-col cols=12>
-                <v-card>
-                    <v-img
-                        src="../assets/MyPlan.png"
-                        class="align-end"
-                        gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
-                    >
-                        <v-card-title
-                            class="text-h7"
-                        >My Plan</v-card-title>
+                <v-hover
+                v-slot="{ hover }"
+                >
+                    <v-card
+                    :elevation="hover ? 16 : 2"
+                    :class="{ 'on-hover': hover }">
+                        <v-img
+                            src="../assets/TraingPlan.png"
+                            class="align-end"
+                            gradient="to bottom, rgba(255,255,255,0), rgba(255,255,255.1)"
+                        >
+                            <v-card-title
+                                class="text-h7"
+                            >My Plan</v-card-title>
 
-                        <v-card-subtitle>My Plan</v-card-subtitle>
-                        <v-btn plain dense block router :to="router.myPlan">My Plan</v-btn>
-                    </v-img>
-                </v-card>
+                            <v-card-subtitle>My Plan</v-card-subtitle>
+                            <v-btn plain dense block router :to="router.myPlan">My Plan</v-btn>
+                        </v-img>
+                    </v-card>
+                </v-hover>
             </v-col>
         </v-row>
     </v-container>
@@ -120,7 +159,21 @@ export default {
             changePlan:'/training/changePlan',
             deletePlan:'/training/deletePlan',
             myPlan:'/training/myPlan',
-        }
+        },
+        items: [
+            {
+                src: 'http://121.4.185.108/images/Training3.png',
+            },
+            {
+                src: 'http://121.4.185.108/images/Training2.png',
+            },
+            {
+                src: 'http://121.4.185.108/images/Training1.png',
+            },
+            {
+                src: 'http://121.4.185.108/images/Training4.png',
+            },
+        ],
     }),
 }
 </script>

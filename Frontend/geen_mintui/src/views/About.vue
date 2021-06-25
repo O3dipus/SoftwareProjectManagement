@@ -1,18 +1,28 @@
 <template>
   <!--在视频外面加一个容器-->
     <div class="input_video">
-      <video-player  
-      class="video-player vjs-custom-skin"
-      ref="videoPlayer"
-      :playsinline="true"
-      :options="playerOptions"
-      ></video-player>
+        <video-player  
+        class="video-player vjs-custom-skin"
+        ref="videoPlayer"
+        :playsinline="true"
+        :options="playerOptions"
+        ></video-player>
 
-      <v-btn
-        color="grey darken-1"
-        class="d-flex"
-        @click="back"
-      >返回</v-btn>
+        <v-row
+        class="pa-6">
+          <v-col 
+          align="center"
+          justify="center"
+          col=6>
+            <v-btn
+            color="grey"
+            class="mr-4"
+            @click="back"
+            >
+            返回主页
+            </v-btn>
+            </v-col>
+        </v-row>
     </div>
 </template>
 

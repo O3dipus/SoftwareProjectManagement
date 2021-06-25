@@ -224,11 +224,7 @@ export default {
         this.alert = true;
       }
       else{
-        
         console.log("Good");
-      }
-      /*
-      else{
         this.$axios.get(
         'http://124.70.23.6:8080/api/v1/register',
         {
@@ -253,7 +249,7 @@ export default {
         }
       })
       .catch(error =>console.log(error.data));
-      }*/
+      }
     }
   }
 };

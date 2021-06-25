@@ -220,7 +220,7 @@ export default {
         showViewComment:false,
         showAddComment:false,
         showToAddPlan:false,
-        commentText:[{}],
+        commentText:[],
         currentCourseId:'',
         accountName:'',
         workoutName:'',
@@ -288,7 +288,7 @@ export default {
         },
         IdentifyCurId4(name){
             console.log(name);
-            sessionStorage.setItem('videoSrc',JSON.stringify("http://124.70.23.6/"+name+".mp4"));
+            sessionStorage.setItem('videoSrc',JSON.stringify("http://121.4.185.108/images/"+name+".mp4"));
             this.$router.push("/about");
         },
         addComment(){

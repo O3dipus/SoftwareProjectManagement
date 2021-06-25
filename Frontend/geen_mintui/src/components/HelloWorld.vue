@@ -33,7 +33,7 @@
               >Diet Plan</v-card-title>
 
               <v-card-subtitle>Fix your customized diet plan.</v-card-subtitle>
-              <v-btn plain dense block>Fix Diet Plan</v-btn>
+              <v-btn plain dense block router :to="router.diet">Fix Diet Plan</v-btn>
           </v-img>
         </v-card>
       </v-col>
@@ -63,12 +63,19 @@
 <script>
   export default {
     name: 'HelloWorld',
+    mounted() {
+      sessionStorage.setItem('videoSrc',JSON.stringify("http://121.4.185.108/images/健身指导.mp4"));
+    },
 
     data: () => ({
       router:{
         fitness:'/training/home',
-        about:'/about'
-      }
+        about:'/about',
+        diet:'/diet/home',
+      },
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     }),
+    methods: {
+    },
   }
 </script>
