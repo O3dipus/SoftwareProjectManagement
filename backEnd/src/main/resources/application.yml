@@ -1,0 +1,6 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://121.4.185.108:3306/geen?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: ccd
+    password: Chichengdao233
